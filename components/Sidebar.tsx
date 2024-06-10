@@ -15,7 +15,7 @@ const Sidebar = ({ user }: SiderbarProps) => {
   }
 
   return (
-    <div className=" flex flex-col items-start justify-items-start h-96 w-full">
+    <div className=" flex flex-col items-start justify-items-start h-96 w-full ">
       <div className=" flex flex-row w-full">
         <Image
           src="/icons/arrow-right.svg"
@@ -55,7 +55,7 @@ const Sidebar = ({ user }: SiderbarProps) => {
               />
             </div>
             <p
-              className={cn('sidebar-label', {
+              className={cn('sidebar-label text-current ', {
                 '!text-white': isActive,
                 hidden: !opensidebar,
               })}

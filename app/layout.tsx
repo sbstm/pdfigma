@@ -1,15 +1,7 @@
 import type { Metadata } from 'next'
 import { Inter as FontSans } from 'next/font/google'
 import './globals.css'
-import {
-  ResizableHandle,
-  ResizablePanel,
-  ResizablePanelGroup,
-} from '@/components/ui/resizable'
 import { cn } from '@/lib/utils'
-import Navtop from '@/components/Navtop'
-import Sidebar from '@/components/Sidebar'
-import Road from '@/components/Road'
 
 const fontSans = FontSans({
   subsets: ['latin'],
@@ -25,29 +17,15 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const user = {
-    name: 'John Doe',
-    email: ' ',
-  }
   return (
     <html>
       <body
         className={cn(
-          ' bg-background font-sans antialiased',
+          ' bg-background  font-sans antialiased flex flex-col w-screen items-center align-middle',
           fontSans.variable
         )}
       >
-        <div className=" flex flex-row">
-          <div className="flex  border-r-2 p-6">
-            <Sidebar user={user} />
-          </div>
-
-          <div className="flex flex-col w-full h-full items-start justify-between p-6">
-            <Navtop />
-            <Road />
-            {children}
-          </div>
-        </div>
+        {children}
       </body>
     </html>
   )

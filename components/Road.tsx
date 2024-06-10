@@ -1,5 +1,8 @@
+'use client'
 import React from 'react'
-import { SlashIcon } from '@radix-ui/react-icons'
+import { ChevronDownIcon, SlashIcon } from '@radix-ui/react-icons'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 
 import {
   Breadcrumb,
@@ -7,7 +10,6 @@ import {
   BreadcrumbLink,
   BreadcrumbEllipsis,
   BreadcrumbList,
-  BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb'
 import {
@@ -16,29 +18,49 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { SearchBar } from '@rneui/themed'
 
-const Road = () => {
+interface BreadcrumbLinkData {
+  href: string
+  label: string
+}
+
+const Road: React.FC = () => {
+  const currentPath = usePathname()
+
+  const getBreadcrumbLinks = (): BreadcrumbLinkData[] => {
+    const pathSegments = currentPath.split('/').filter(Boolean)
+
+    return pathSegments.map((segment, index) => ({
+      href: `/${pathSegments.slice(0, index + 1).join('/')}`,
+      label: decodeURIComponent(segment),
+    }))
+  }
   return (
     <div className="py-5">
       <Breadcrumb>
         <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink href="/">Home</BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator>
-            <SlashIcon />
-          </BreadcrumbSeparator>
-          <BreadcrumbItem>
-            <BreadcrumbLink href="/signin">signin</BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator>
-            <SlashIcon />
-          </BreadcrumbSeparator>
+          <BreadcrumbSeparator />
+          {getBreadcrumbLinks().map((link, index) => (
+            <React.Fragment key={index}>
+              <BreadcrumbItem>
+                <Link href={link.href} legacyBehavior passHref>
+                  <BreadcrumbLink>{link.label}</BreadcrumbLink>
+                </Link>
+              </BreadcrumbItem>
+
+              {index < getBreadcrumbLinks().length - 1 && (
+                <BreadcrumbSeparator>
+                  <BreadcrumbSeparator />
+                </BreadcrumbSeparator>
+              )}
+            </React.Fragment>
+          ))}
+
           <BreadcrumbItem>
             <DropdownMenu>
               <DropdownMenuTrigger className="flex items-center gap-1">
-                <BreadcrumbEllipsis className="h-4 w-4" />
-                <span className="sr-only">Toggle menu</span>
+                <ChevronDownIcon />
               </DropdownMenuTrigger>
               <DropdownMenuContent align="start">
                 <DropdownMenuItem>Documentation</DropdownMenuItem>

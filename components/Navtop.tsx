@@ -40,7 +40,7 @@ const Navtop = () => {
       </div>
       <div className=" flex gap-3 items-center ">
         <Switch id="dark-mode" onClick={toggleDarkMode} />
-        <Label htmlFor="dark-mode">Dark Mode</Label>
+        <Label htmlFor="dark-mode">{!isDarkMode ? '☀️' : '🌙'}</Label>
       </div>
     </div>
   )

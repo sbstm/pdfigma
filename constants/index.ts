@@ -11,8 +11,8 @@ export const sidebarLinks = [
   },
   {
     imgURL: '/icons/transaction.svg',
-    route: '/guru',
-    label: 'Guru',
+    route: '/activity',
+    label: 'Activity',
   },
   {
     imgURL: '/icons/money-send.svg',

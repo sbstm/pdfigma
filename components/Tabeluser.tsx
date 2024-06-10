@@ -1,4 +1,4 @@
-"use client"
+'use client'
 import * as React from 'react'
 import {
   CaretSortIcon,
@@ -38,48 +38,61 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import Link from 'next/link'
 
-const data: Payment[] = [
+const data: ActivityProps[] = [
   {
     id: 'm5gr84i9',
-    amount: 316,
-    status: 'success',
+    nilai: 316,
+    status: 'selesai',
     email: 'ken99@yahoo.com',
+    jenis: 'tugas',
+    grub: 'A',
+    link: 'https://example.com/ken99',
   },
   {
     id: '3u1reuv4',
-    amount: 242,
-    status: 'success',
+    nilai: 242,
+    status: 'selesai',
     email: 'Abe45@gmail.com',
+    jenis: 'materi',
+    grub: 'G',
+
+    link: 'https://example.com/Abe45',
   },
   {
     id: 'derv1ws0',
-    amount: 837,
-    status: 'processing',
+    nilai: 837,
+    status: 'on going',
     email: 'Monserrat44@gmail.com',
+    jenis: 'Quiz',
+    grub: 'D',
+
+    link: 'https://example.com/Monserrat44',
   },
   {
     id: '5kma53ae',
-    amount: 874,
-    status: 'success',
+    nilai: 874,
+    status: 'selesai',
     email: 'Silas22@gmail.com',
+    jenis: 'proyek',
+    grub: 'C',
+
+    link: 'https://example.com/Silas22',
   },
   {
     id: 'bhqecj4p',
-    amount: 721,
-    status: 'failed',
+    nilai: 721,
+    status: 'belum',
     email: 'carmella@hotmail.com',
+    jenis: 'tugas',
+    grub: 'B',
+
+    link: 'https://example.com/carmella',
   },
 ]
 
-export type Payment = {
-  id: string
-  amount: number
-  status: 'pending' | 'processing' | 'success' | 'failed'
-  email: string
-}
-
-export const columns: ColumnDef<Payment>[] = [
+export const columns: ColumnDef<ActivityProps>[] = [
   {
     id: 'select',
     header: ({ table }) => (
@@ -104,7 +117,17 @@ export const columns: ColumnDef<Payment>[] = [
   },
   {
     accessorKey: 'status',
-    header: 'Status',
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
+          status
+          <CaretSortIcon className="ml-2 h-4 w-4" />
+        </Button>
+      )
+    },
     cell: ({ row }) => (
       <div className="capitalize">{row.getValue('status')}</div>
     ),
@@ -125,25 +148,71 @@ export const columns: ColumnDef<Payment>[] = [
     cell: ({ row }) => <div className="lowercase">{row.getValue('email')}</div>,
   },
   {
-    accessorKey: 'amount',
-    header: () => <div className="text-right">Amount</div>,
-    cell: ({ row }) => {
-      const amount = parseFloat(row.getValue('amount'))
-
-      // Format the amount as a dollar amount
-      const formatted = new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'USD',
-      }).format(amount)
-
-      return <div className="text-right font-medium">{formatted}</div>
+    accessorKey: 'jenis',
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
+          Jenis
+          <CaretSortIcon className="ml-2 h-4 w-4" />
+        </Button>
+      )
     },
+    cell: ({ row }) => <div className="">{row.getValue('jenis')}</div>,
+  },
+
+  {
+    accessorKey: 'grub',
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          className=""
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
+          grub
+          <CaretSortIcon className="ml-2 h-4 w-4" />
+        </Button>
+      )
+    },
+    cell: ({ row }) => <div className="">{row.getValue('grub')}</div>,
+  },
+
+  {
+    accessorKey: 'link',
+    header: () => <div className="pl-5">link</div>,
+    cell: ({ row }) => {
+      const link = parseFloat(row.getValue('link'))
+      return (
+        <Link href={row.getValue('link')} className=" ">
+          {row.getValue('link')}
+        </Link>
+      )
+    },
+  },
+  {
+    accessorKey: 'nilai',
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          className=""
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
+          nilai
+          <CaretSortIcon className="ml-2 h-4 w-4" />
+        </Button>
+      )
+    },
+    cell: ({ row }) => <div className="">{row.getValue('nilai')}</div>,
   },
   {
     id: 'actions',
     enableHiding: false,
     cell: ({ row }) => {
-      const payment = row.original
+      const Activity = row.original
 
       return (
         <DropdownMenu>
@@ -156,13 +225,17 @@ export const columns: ColumnDef<Payment>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(payment.id)}
+              onClick={() => navigator.clipboard.writeText(Activity.id)}
             >
-              Copy payment ID
+              Copy Activity ID
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem>View customer</DropdownMenuItem>
-            <DropdownMenuItem>View payment details</DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => navigator.clipboard.writeText(Activity.link)}
+            >
+              Copy link materi
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       )
