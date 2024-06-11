@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { cn } from '@/lib/utils'
 import {
@@ -19,9 +19,7 @@ import {
 import { BellIcon, CaretSortIcon, CheckIcon } from '@radix-ui/react-icons'
 import { Switch } from './ui/switch'
 import { Label } from './ui/label'
-import { handleClientScriptLoad } from 'next/script'
-import clsx from 'clsx'
-import { Console } from 'console'
+import { Progress } from './ui/progress'
 
 const data: MataPelajaran[] = [
   {
@@ -36,7 +34,7 @@ const data: MataPelajaran[] = [
       {
         id: '2',
         content: 'Operasi Bilangan asd asjdkljalkwjiskadj asksajldBulat',
-        completed: false,
+        completed: true,
       },
     ],
   },
@@ -99,7 +97,10 @@ const Ruangkelas = () => {
   const [activeSubTema, setActiveSubTema] = useState<Record<string, boolean>>(
     {}
   )
-
+  const [percentagePerSubject, setPercentagePerSubject] = useState<
+    Record<string, number>
+  >({})
+  const [percentageComplete, setPercentageComplete] = useState<number>(0)
   const [isCollapsibleOpen, setIsCollapsibleOpen] = useState<
     Record<string, boolean>
   >(data.reduce((acc, item) => ({ ...acc, [item.id]: false }), {}))
@@ -132,6 +133,35 @@ const Ruangkelas = () => {
         !prev[`${mataPelajaranId}-${subTemaId}`],
     }))
   }
+  useEffect(() => {
+    const calculatePercentages = () => {
+      const newPercentages: Record<string, number> = {}
+      data.forEach((item) => {
+        const completedForSubject = item.subTema.filter(
+          (sub) => subTemaCompleted[`${item.id}-${sub.id}`]
+        ).length
+        const totalForSubject = item.subTema.length
+        newPercentages[item.id] = (completedForSubject / totalForSubject) * 100
+      })
+      setPercentagePerSubject(newPercentages)
+    }
+
+    calculatePercentages()
+  }, [subTemaCompleted])
+
+  useEffect(() => {
+    const calculatePercentage = () => {
+      const completedCount =
+        Object.values(subTemaCompleted).filter(Boolean).length
+      const totalCount = Object.values(subTemaCompleted).length
+      const percentage = (completedCount / totalCount) * 100
+
+      // Update state or perform other actions with the calculated percentage
+      setPercentageComplete(percentage) // Example: setting state for display
+    }
+
+    calculatePercentage() // Initial calculation
+  }, [subTemaCompleted]) // Dependency array
 
   return (
     <section>
@@ -195,15 +225,23 @@ const Ruangkelas = () => {
                                 {activeSubTema[`${item.id}-${sub.id}`] && (
                                   <div className="ml-4 mt-2">
                                     {/* Konten materi pembelajaran di sini */}
-                                    <p>
-                                      Ini adalah konten materi pembelajaran
-                                      untuk {sub.content}
-                                    </p>
+                                    <p>{sub.content}</p>
                                   </div>
                                 )}
                               </div>
                             </Card>
                           ))}
+                          <Progress
+                            value={
+                              percentagePerSubject.hasOwnProperty(item.id)
+                                ? percentagePerSubject[item.id]
+                                : 0
+                            }
+                            className="w-2/3"
+                          />
+                          <p className="ml-2 text-sm text-gray-500">
+                            {(percentagePerSubject[item.id] || 0).toFixed(1)}%
+                          </p>
                         </div>
                       </CollapsibleContent>
                     </Collapsible>
@@ -212,10 +250,9 @@ const Ruangkelas = () => {
               ))}
             </div>
           </CardContent>
-          <CardFooter>
-            <Button className="w-full">
-              <CheckIcon className="mr-2 h-4 w-4" /> Mark all as read
-            </Button>
+          <CardFooter className="w-full justify-around">
+            <Progress value={percentageComplete} className="w-4/5" />
+            <p className="w-auto">{`${percentageComplete.toFixed(1)} %`}</p>
           </CardFooter>
         </Card>
       </div>

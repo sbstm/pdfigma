@@ -36,3 +36,16 @@ declare interface SubTema {
   content: string
   completed: boolean
 }
+
+declare interface ColumnProps {
+  id: string
+  title: string
+  taskIds: string[]
+}
+
+declare interface TaskProps {
+  id: string // Unique identifier (UUID or similar)
+  title: string
+  date: Date // Date the task is due/scheduled for
+  description: string // Optional description
+}
