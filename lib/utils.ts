@@ -13,9 +13,8 @@ export const authFormSchema = (type: string) =>
     // sign up
     firstName: type === 'sign-in' ? z.string().optional() : z.string().min(3),
     lastName: type === 'sign-in' ? z.string().optional() : z.string().min(3),
-    address: type === 'sign-in' ? z.string().optional() : z.string().max(50),
-    kelas: type === 'sign-in' ? z.string().optional() : z.string().max(50),
-    dateOfBirth: type === 'sign-in' ? z.string().optional() : z.string().min(3),
+    tanggal_lahir: type === 'sign-in' ? z.string().optional() : z.string().min(3),
+    jk: type === 'sign-in' ? z.string().optional() : z.enum(['Laki-laki', 'Perempuan']),
     // both
     email: z.string().email(),
     password: z.string().min(8),

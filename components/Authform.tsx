@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { signIn, signUp } from '@/lib/actions/user.action'
 import { useRouter } from 'next/navigation'
 import { Button } from './ui/button'
@@ -28,8 +28,6 @@ const AuthForm = ({ type }: { type: string }) => {
   const router = useRouter()
   const [user, setUser] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
-  const [activeTab, setActiveTab] = useState('sign-in')
-  const [error, setError] = useState<string | null>(null)
 
   const formSchema = authFormSchema(type)
   const form = useForm<z.infer<typeof formSchema>>({
@@ -42,6 +40,8 @@ const AuthForm = ({ type }: { type: string }) => {
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     setIsLoading(true)
+    console.log(data)
+
     try {
       if (type === 'sign-up') {
         const userData = {
@@ -49,12 +49,13 @@ const AuthForm = ({ type }: { type: string }) => {
           password: data.password,
           firstName: data.firstName!,
           lastName: data.lastName!,
-          address: data.address!,
-          kelas: data.kelas!,
-          dateOfBirth: data.dateOfBirth!,
+          name: `${data.firstName} ${data.lastName}`,
+          role: 'siswa',
+          tanggal_lahir:`${data.tanggal_lahir}`,
+          jk: data.jk,
         }
-
-        const newUser = await signUp(userData)
+        console.log(userData)
+        const newUser = await signUp(data.password ,userData)
 
         setUser(newUser)
       }
@@ -111,21 +112,17 @@ const AuthForm = ({ type }: { type: string }) => {
                   />
                   <CustomInput
                     control={form.control}
-                    name="address"
-                    label="Address"
-                    placeholder="Enter your address"
+                    name="tanggal_lahir"
+                    label="Tanggal Lahir"
+                    placeholder="Enter your tanggal lahir"
+                    type='date'
                   />
                   <CustomInput
-                    control={form.control}
-                    name="kelas"
-                    label="Kelas"
-                    placeholder="Enter your kelas"
-                  />
-                  <CustomInput
-                    control={form.control}
-                    name="dateOfBirth"
-                    label="Date of Birth"
-                    placeholder="Enter your date of birth"
+                  control={form.control}
+                  name='jk'
+                  label='Jenis Kelamin'
+                  placeholder='Pilih Jenis Kelamin'
+
                   />
                 </div>
               )}
@@ -134,12 +131,14 @@ const AuthForm = ({ type }: { type: string }) => {
                 name="email"
                 label="Email"
                 placeholder="Enter your email"
+                type='email'
               />
               <CustomInput
                 control={form.control}
                 name="password"
                 label="Password"
                 placeholder="Enter your password"
+                type='password'
               />
               <div className="flex flex-col gap-4">
                 <Button type="submit" disabled={isLoading} className="form-btn">

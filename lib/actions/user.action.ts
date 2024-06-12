@@ -71,7 +71,7 @@ export const signIn = async ({ email, password }: signInProps) => {
 }
 
 export const signUp = async ({ password, ...userData }: signUpProps) => {
-  const { email, firstName, lastName, address, dateOfBirth, kelas } = userData
+  const { email, firstName, lastName, name,role,jk,tanggal_lahir} = userData
 
   let newUserAccount
 
