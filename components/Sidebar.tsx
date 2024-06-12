@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { cn } from '@/lib/utils'
 import { usePathname } from 'next/navigation'
 import { sidebarLinks } from '@/constants'
+import Navprofile from './Navprofile'
 
 const Sidebar = ({ user }: SiderbarProps) => {
   const [opensidebar, setOpensidebar] = useState(true)
@@ -65,6 +66,7 @@ const Sidebar = ({ user }: SiderbarProps) => {
           </Link>
         )
       })}
+      <Navprofile size={opensidebar} user={user} />
     </div>
   )
 }

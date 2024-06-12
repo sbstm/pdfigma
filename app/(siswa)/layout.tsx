@@ -5,20 +5,21 @@ import { cn } from '@/lib/utils'
 import Navtop from '@/components/Navtop'
 import Sidebar from '@/components/Sidebar'
 import Road from '@/components/Road'
+import { getLoggedInUser } from '@/lib/actions/user.action'
+import { redirect } from 'next/navigation'
 
 const fontSans = FontSans({
   subsets: ['latin'],
   variable: '--font-sans',
 })
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const user = {
-    name: 'John Doe',
-    email: ' ',
-  }
+  const loggedIn = await getLoggedInUser()
+
+  if (!loggedIn) redirect('/sign-in')
   return (
     <div
       className={cn(
@@ -28,7 +29,7 @@ export default function RootLayout({
     >
       <div className=" flex flex-row">
         <div className="border-r-2 sticky left-0 top-0 flex h-screen w-fit flex-col  justify-between p-4 ">
-          <Sidebar user={user} />
+          <Sidebar user={loggedIn} />
         </div>
 
         <div className="flex flex-col w-full h-full items-start justify-between p-6">

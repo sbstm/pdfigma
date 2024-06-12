@@ -1,10 +1,13 @@
 import Datasiswa from '@/components/Datasiswa'
 import React from 'react'
 
-const page = () => {
+import { getLoggedInUser } from '@/lib/actions/user.action'
+
+const page = async () => {
+  const loggedIn = await getLoggedInUser()
   return (
     <div className="flex flex-col w-full">
-      <Datasiswa />
+      <Datasiswa user={loggedIn}/>
     </div>
   )
 }

@@ -1,6 +1,4 @@
-declare interface SiderbarProps {
-  user: User
-}
+import { RelationshipType } from 'node-appwrite'
 
 declare interface ActivityProps {
   id: string
@@ -13,7 +11,7 @@ declare interface ActivityProps {
 }
 
 declare interface UserProps {
-  id: string
+  userId: string
   email: string
   firstName: string
   kelas: string
@@ -21,8 +19,17 @@ declare interface UserProps {
   name: string
   role: 'student' | 'teacher'
   photoURL: string
-  activity: string[]
-  grub: string[]
+  activity: RelationshipType[]
+  grub: RelationshipType[]
+}
+
+declare interface signInProps {
+  email: string
+  password: string
+}
+
+declare interface getUserInfoProps {
+  userId: string
 }
 
 declare interface MataPelajaran {
@@ -35,6 +42,16 @@ declare interface SubTema {
   id: string
   content: string
   completed: boolean
+}
+
+declare interface signUpProps {
+  email: string
+  password: string
+  firstName: string
+  lastName: string
+  dateOfBirth: string
+  address: string
+  kelas: string
 }
 
 declare interface ColumnProps {

@@ -1,3 +1,4 @@
+'use client'
 import React from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 
@@ -9,6 +10,9 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from '@/components/ui/carousel'
+import { logoutAccount } from '@/lib/actions/user.action'
+import { useRouter } from 'next/navigation'
+import Image from 'next/image'
 
 const data: UserProps[] = [
   {
@@ -25,7 +29,14 @@ const data: UserProps[] = [
   },
 ]
 
-const Datasiswa = () => {
+const Datasiswa = ({ user }: SiderbarProps) => {
+  const router = useRouter()
+  const handleLogOut = async () => {
+    const loggedOut = await logoutAccount()
+
+    if (loggedOut) router.push('/sign-in')
+  }
+
   const fallback = data[0].firstName[0] + data[0].lastName[0]
   return (
     <div className=" flex flex-col w-full">
@@ -41,10 +52,14 @@ const Datasiswa = () => {
       </div>
       <div className="text-center">
         <h1 className="text-2xl">
-          {data[0].firstName + ' ' + data[0].lastName}
+          {user.firstName} {user.lastName}
         </h1>
-        <p>{data[0].role + ' ' + data[0].kelas}</p>
+        <p>{user.kelas}</p>
+        <div className="w-10 h-10 cursor-pointer" onClick={handleLogOut}>
+          <Image src="\icons\logout.svg" height={50} width={50} alt="jsm" />
+        </div>
       </div>
+
       <div className="">
         <div className=" pt-10 items-center ">
           <h1 className="text-xl text-center m-4">Activity</h1>
