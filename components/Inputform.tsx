@@ -1,98 +1,115 @@
-'use client'
+"use client";
 
-import React, { useState } from 'react'
-import { useRouter } from 'next/navigation'
-import { Button } from './ui/button'
-import { Input } from './ui/input'
-import { Label } from './ui/label'
-import { Textarea } from './ui/textarea'
-import { createMatapelajaran } from '@/lib/actions/matapelajaran.actions'
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import { Button } from "./ui/button";
+import { Input } from "./ui/input";
+import { Label } from "./ui/label";
+import { Textarea } from "./ui/textarea";
+import { createMatapelajaran } from "@/lib/actions/matapelajaran.actions";
+import { mapelFormSchema } from "@/lib/utils";
+import { z } from "zod";
+import { set } from "date-fns";
+import {CustomInputMapel} from "./CustumInput";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Form } from "./ui/form";
+import { useToast } from "./ui/use-toast";
 
 const Inputform = () => {
-  const router = useRouter()
-  const [formData, setFormData] = useState({
-    nama: '',
-    describe: '',
-    link: '',
-    date: new Date().toISOString(),
-  })
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+  const formSchema = mapelFormSchema();
+  const [submitting, setSubmitting] = useState(false);
+  const { toast } = useToast()
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value })
-  }
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: "",
+      kelas: "",
+      deskripsi: "",
+      image_url: "",
+    },
+  });
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    setIsLoading(true)
-    setError(null)
+  const onSubmit = async (data: z.infer<typeof formSchema>) => {
+    setIsLoading(true);
+    console.log(data);
     try {
-      console.log('Data Submitted: ', formData)
-      const response = await createMatapelajaran(formData)
-      console.log('Response from API: ', response)
-      // Redirect atau lakukan sesuatu setelah berhasil
-      router.push('/success') // Misalnya, arahkan ke halaman sukses
+      const mapelData = {
+        name: data.name,
+        deskripsi: data.deskripsi,
+        image_url: data.image_url,
+        kelas: data.kelas,
+      };
+      const newMapel = await createMatapelajaran(mapelData);
+      console.log(newMapel);
+      setSubmitting(true);
     } catch (error) {
-      setError('Failed to create Matapelajaran.')
-      console.error('Error Submitting Data:', error)
+      console.log(error);
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
+  };
+
+  const handletoast = () => {
+    toast({
+      description: (submitting === true ? "Data masuk." : "Data gagal masuk."),
+    })
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div>
-        <Label htmlFor="nama">Nama Mata Pelajaran</Label>
-        <Input
-          type="text"
-          id="nama"
-          name="nama"
-          value={formData.nama}
-          onChange={handleChange}
-          required
-        />
-      </div>
-      <div>
-        <Label htmlFor="describe">Deskripsi</Label>
-        <Textarea
-          id="describe"
-          name="describe"
-          value={formData.describe}
-          onChange={handleChange}
-          required
-        />
-      </div>
-      <div>
-        <Label htmlFor="link">Link</Label>
-        <Input
-          type="text"
-          id="link"
-          name="link"
-          value={formData.link}
-          onChange={handleChange}
-          required
-        />
-      </div>
-      <div>
-        <Label htmlFor="date">Tanggal</Label>
-        <Input
-          type="date"
-          id="date"
-          name="date"
-          value={formData.date}
-          onChange={handleChange}
-          required
-        />
-      </div>
-      <Button type="submit" disabled={isLoading}>
-        {isLoading ? 'Membuat...' : 'Buat Mata Pelajaran'}
-      </Button>
-    </form>
-  )
-}
+    <div>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <CustomInputMapel
+            control={form.control}
+            name="name"
+            label="Nama Mata Pelajaran"
+            placeholder="Nama Mata Pelajaran"
+            type="text"
+          />
+          <CustomInputMapel
+            control={form.control}
+            name="kelas"
+            label="Kelas"
+            placeholder="Kelas"
+            type="text"
+          />
+          <CustomInputMapel
+            control={form.control}
+            name="deskripsi"
+            label="Deskripsi"
+            placeholder="Deskripsi"
+            type="text"
+          />
+          <CustomInputMapel
+            control={form.control}
+            name="image_url"
+            label="Image URL"
+            placeholder="Image URL"
+            type="text"
+          />
+          <Button type="submit" disabled={isLoading}
+          onClick={handletoast} >
+            {isLoading ? "Membuat..." : "Buat Mata Pelajaran"}
+          </Button>
+          
+        </form>
+      </Form>
+      <Button
+          variant="outline"
+          onClick={() => {
+            toast({
+              description: "Your message has been sent.",
+            })
+          }}
+          >
+            test
+          </Button>
+    </div>
+  );
+};
 
-export default Inputform
+export default Inputform;

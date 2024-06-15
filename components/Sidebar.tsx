@@ -16,30 +16,30 @@ const Sidebar = ({ user }: SiderbarProps) => {
   }
 
   return (
-    <div className=" flex flex-col items-start justify-items-start h-96 w-full ">
+    <div className=" flex flex-col items-start justify-between h-full w-full ">
+      <div className="w-full">
+
       <div className=" flex flex-row w-full">
         <Image
           src="/icons/arrow-right.svg"
           alt="dqa"
-          className={cn('', { 'items-end  rotate-180': opensidebar })}
+          className={cn('items-center', { 'items-center  rotate-180': opensidebar })}
           width={35}
           height={35}
           onClick={handleopensidebar}
-        />
+          />
       </div>
-      <div className="h-2"></div>
-
       {sidebarLinks.map((item) => {
         const isActive =
-          pathname === item.route || pathname.startsWith(`${item.route}/`)
-
+        pathname === item.route || pathname.startsWith(`${item.route}/`)
+        
         return (
           <Link
-            href={item.route}
-            key={item.label}
-            className={cn('flex flex-row m-2 p-2 rounded-xl gap-3', {
-              'bg-[#f9802d]': isActive,
-            })}
+          href={item.route}
+          key={item.label}
+          className={cn('flex flex-row items-start justify-start w-full my-2 gap-2 p-3  rounded-xl border bg-card text-card-foreground shadow', {
+            'bg-[#f9802d]': isActive,
+          })}
           >
             <div className="relative size-6">
               <Image
@@ -52,20 +52,21 @@ const Sidebar = ({ user }: SiderbarProps) => {
                     'brightness-[3] invert-0': isActive,
                   },
                   { 'justify-items-center-center': !opensidebar }
-                )}
-              />
+                  )}
+                  />
             </div>
             <p
               className={cn('sidebar-label text-current ', {
                 '!text-white': isActive,
                 hidden: !opensidebar,
               })}
-            >
+              >
               {item.label}
             </p>
           </Link>
         )
       })}
+      </div>
       <Navprofile size={opensidebar} user={user} />
     </div>
   )

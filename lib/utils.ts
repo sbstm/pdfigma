@@ -19,3 +19,10 @@ export const authFormSchema = (type: string) =>
     email: z.string().email(),
     password: z.string().min(8),
   })
+
+export const mapelFormSchema = () => z.object({
+  name: z.string().min(3),
+  kelas: z.string(),
+  deskripsi: z.string().min(3),
+  image_url: z.string().optional(),
+})

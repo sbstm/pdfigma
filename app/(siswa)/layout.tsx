@@ -28,7 +28,7 @@ export default async function RootLayout({
       )}
     >
       <div className=" flex flex-row">
-        <div className="border-r-2 sticky left-0 top-0 flex h-screen w-fit flex-col  justify-between p-4 ">
+        <div className="border-r-2 sticky left-0 top-0 flex h-screen w-auto flex-col  justify-between p-4 ">
           <Sidebar user={loggedIn} />
         </div>
 

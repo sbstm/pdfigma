@@ -4,6 +4,7 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import { getLoggedInUser } from '@/lib/actions/user.action'
+import { Toaster } from '@/components/ui/toaster'
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 export const metadata: Metadata = {
@@ -21,6 +22,7 @@ export default async function RootLayout({
     <html>
       <body>
         <div className={inter.variable}>{children}</div>
+        <Toaster />
       </body>
     </html>
   )

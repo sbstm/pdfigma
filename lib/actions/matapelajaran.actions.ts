@@ -4,12 +4,15 @@ import { ID, Query } from 'node-appwrite'
 import { cookies } from 'next/headers'
 import { createAdminClient } from '../appwrite'
 import { revalidatePath } from 'next/cache'
+import { parseStringify } from '../utils'
 
 const {
   APPWRITE_DATABASE_ID: DATABASE_ID,
   APPWRITE_MATAPELAJARAN_COLLECTION_ID: MATAPELAJARAN_COLLECTION_ID,
 } = process.env
-export async function createMatapelajaran(data: any) {
+
+export async function createMatapelajaran(data: MapelParams) {
+  const { name, kelas,deskripsi,image_url} = data
   try {
     const documentId = ID.unique()
     const adminClient = await createAdminClient()
@@ -19,7 +22,6 @@ export async function createMatapelajaran(data: any) {
       ID.unique(),
       data
     )
-
     return response
   } catch (error: any) {
     console.error('Error creating Matapelajaran document:', error)
@@ -35,43 +37,24 @@ export async function createMatapelajaran(data: any) {
   }
 }
 
-export async function readMatapelajaran(data: any) {
+export async function readMatapelajaran() {
   try {
-    const adminClient = await createAdminClient()
-    const response = await adminClient.database.listDocuments(
+    const { database } = await createAdminClient();
+    const response = await database.listDocuments(
       DATABASE_ID!,
       MATAPELAJARAN_COLLECTION_ID!,
-      data
     )
-
-    return response
+    return parseStringify(response.documents)
   } catch (error: any) {
-    if (error.response) {
-      const appwriteError = error.response as unknown as {
-        code: number
-        message: string
-      }
-
-      console.error(
-        'Error creating Matapelajaran document:',
-        appwriteError.code,
-        appwriteError.message
+    console.error('Error creating Matapelajaran document:', error)
+    if (error.response && error.response.status === 401) {
+      // Unauthorized access
+      throw new Error(
+        'Unauthorized: You are not allowed to read a Matapelajaran.'
       )
-
-      // Handle specific Appwrite error codes (examples)
-      if (appwriteError.code === 400) {
-        throw new Error('Schema validation failed for data')
-      } else if (appwriteError.code === 401) {
-        throw new Error('Unauthorized access')
-      }
-
-      // Rethrow other Appwrite errors with their original message
-      throw new Error(appwriteError.message)
     } else {
-      console.error('An unexpected error occurred:', error)
+      // Generic error
+      throw new Error('Failed to read Matapelajaran.')
     }
-
-    // Rethrow a generic error to the client
-    throw new Error('Failed to create Matapelajaran. Please try again.')
   }
 }

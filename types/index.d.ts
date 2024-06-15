@@ -4,15 +4,15 @@ declare interface UserParams {
   firstName: string;
   lastName: string;
   name: string;
-  role: "siswa" | "guru";
+  role: string;
   tanggal_lahir: Date;
   jk: boolean;
-  address: string;
-  photoURL: string;
-  tanggal_lahir: Date;
-  nis: string;
-  kelas: string;
-  matapelajaran: string;
+  address: string!;
+  photoURL: string!;
+  tanggal_lahir: string;
+  nis: string!;
+  kelas: string!;
+  matapelajaran: string!;
 }
 
 declare interface ActivityParams {
@@ -26,7 +26,7 @@ declare interface ActivityParams {
 }
 
 declare interface MapelParams {
-  nama: string;
+  name: string;
   subMapel: SubMapel[];
   deskripsi: string;
   kelas: string;
@@ -65,6 +65,10 @@ declare interface signInProps {
   password: string;
 }
 
+declare interface SiderbarProps {
+  user: any;
+}
+
 declare interface getUserInfoProps {
   userId: string;
 }
@@ -75,7 +79,7 @@ declare interface signUpProps {
   firstName: string;
   lastName: string;
   name: string;
-  role: "siswa" | "guru";
+  role: string;
   tanggal_lahir: Date;
   jk: string;
 }

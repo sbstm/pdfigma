@@ -39,60 +39,11 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import Link from 'next/link'
+import { getTabelUser } from '@/lib/actions/user.action'
 
-const data: ActivityProps[] = [
-  {
-    id: 'm5gr84i9',
-    nilai: 316,
-    status: 'selesai',
-    email: 'ken99@yahoo.com',
-    jenis: 'tugas',
-    grub: 'A',
-    link: 'https://example.com/ken99',
-  },
-  {
-    id: '3u1reuv4',
-    nilai: 242,
-    status: 'selesai',
-    email: 'Abe45@gmail.com',
-    jenis: 'materi',
-    grub: 'G',
 
-    link: 'https://example.com/Abe45',
-  },
-  {
-    id: 'derv1ws0',
-    nilai: 837,
-    status: 'on going',
-    email: 'Monserrat44@gmail.com',
-    jenis: 'Quiz',
-    grub: 'D',
-
-    link: 'https://example.com/Monserrat44',
-  },
-  {
-    id: '5kma53ae',
-    nilai: 874,
-    status: 'selesai',
-    email: 'Silas22@gmail.com',
-    jenis: 'proyek',
-    grub: 'C',
-
-    link: 'https://example.com/Silas22',
-  },
-  {
-    id: 'bhqecj4p',
-    nilai: 721,
-    status: 'belum',
-    email: 'carmella@hotmail.com',
-    jenis: 'tugas',
-    grub: 'B',
-
-    link: 'https://example.com/carmella',
-  },
-]
-
-export const columns: ColumnDef<ActivityProps>[] = [
+const user = getTabelUser() 
+export const columns: ColumnDef<UserParams>[] = [
   {
     id: 'select',
     header: ({ table }) => (
@@ -212,7 +163,7 @@ export const columns: ColumnDef<ActivityProps>[] = [
     id: 'actions',
     enableHiding: false,
     cell: ({ row }) => {
-      const Activity = row.original
+      
 
       return (
         <DropdownMenu>
@@ -225,14 +176,14 @@ export const columns: ColumnDef<ActivityProps>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(Activity.id)}
+              // onClick={() => navigator.clipboard.writeText(data.email)}
             >
               Copy Activity ID
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem>View customer</DropdownMenuItem>
             <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(Activity.link)}
+              // onClick={() => navigator.clipboard.writeText(data.name)}
             >
               Copy link materi
             </DropdownMenuItem>
@@ -253,7 +204,7 @@ const Tabeluser = () => {
   const [rowSelection, setRowSelection] = React.useState({})
 
   const table = useReactTable({
-    data,
+    data: [], // Provide an empty array or replace it with your actual data
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,

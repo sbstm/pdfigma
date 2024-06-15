@@ -123,3 +123,14 @@ export const logoutAccount = async () => {
     return null;
   }
 }
+
+export const getTabelUser = async () => {
+  try {
+    const { database } = await createAdminClient();
+    const users = await database.listDocuments(DATABASE_ID!, USER_COLLECTION_ID!);
+    return users;
+  } catch (error) {
+    console.error('Error getting tabel user:', error);
+    throw new Error('Could not get tabel user');
+  }
+}
