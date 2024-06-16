@@ -59,6 +59,7 @@ const AuthForm = ({ type }: { type: string }) => {
           tanggal_lahir: data.tanggal_lahir,
           jk: data.jk || "", // Provide a default value for jk
         };
+       
         const newUser = await signUp(userData);
         setUser(newUser);
         router.push("/");

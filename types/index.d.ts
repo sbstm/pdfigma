@@ -26,6 +26,8 @@ declare interface ActivityParams {
 }
 
 declare interface MapelParams {
+  id?: string;
+  $id?: string;
   name: string;
   subMapel: SubMapel[];
   deskripsi: string;
