@@ -1,5 +1,5 @@
 'use server'
-import { ID, Query } from 'node-appwrite'
+import { Client, ID, Query } from 'node-appwrite'
 import { createAdminClient, createSessionClient } from '../appwrite'
 import { cookies } from 'next/headers'
 import { parseStringify } from '../utils'
@@ -33,6 +33,21 @@ export const signOut = async () => {
   } catch (error) {
     console.error('Error signing out:', error)
     throw new Error('Could not sign out')
+  }
+}
+export async function getUserClass(kelas: string) {
+  try {
+    const { database } = await createAdminClient();
+    const users = await database.listDocuments
+    (
+      DATABASE_ID!, 
+      USER_COLLECTION_ID!,
+      [Query.equal('kelas',[kelas])]
+    );
+    return parseStringify(users.documents);
+  } catch (error) {
+    console.error('Error getting user class:', error);
+    throw new Error('Could not get user class');
   }
 }
 
@@ -124,6 +139,7 @@ export const logoutAccount = async () => {
   }
 }
 
+
 export const getTabelUser = async () => {
   try {
     const { database } = await createAdminClient();
@@ -134,3 +150,4 @@ export const getTabelUser = async () => {
     throw new Error('Could not get tabel user');
   }
 }
+

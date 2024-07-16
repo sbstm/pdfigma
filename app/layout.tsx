@@ -3,8 +3,12 @@ export const dynamic = 'force-dynamic'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
+import './theme.css'
 import { getLoggedInUser } from '@/lib/actions/user.action'
 import { Toaster } from '@/components/ui/toaster'
+import { cn } from '@/lib/utils'
+import { useRouter } from 'next/navigation'
+
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 export const metadata: Metadata = {
@@ -17,11 +21,12 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const loggedIn = await getLoggedInUser()
+
+
   return (
-    <html>
+    <html className={cn('Red-dark')}>
       <body>
-        <div className={inter.variable}>{children}</div>
+     {children}
         <Toaster />
       </body>
     </html>

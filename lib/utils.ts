@@ -8,14 +8,12 @@ export function cn(...inputs: ClassValue[]) {
 
 export const parseStringify = (value: any) => JSON.parse(JSON.stringify(value))
 
-export const authFormSchema = (type: string) =>
+export const authFormSchema = () =>
   z.object({
-    // sign up
-    firstName: type === 'sign-in' ? z.string().optional() : z.string().min(3),
-    lastName: type === 'sign-in' ? z.string().optional() : z.string().min(3),
-    tanggal_lahir: type === 'sign-in' ? z.string().optional() : z.string().min(3),
-    jk: type === 'sign-in' ? z.string().optional() : z.enum(['Laki-laki', 'Perempuan']),
-    // both
+    firstName: z.string().optional() , 
+    lastName: z.string().optional() , 
+    tanggal_lahir: z.string().optional() , 
+    jk: z.enum(['Laki-laki', 'Perempuan']).optional(),
     email: z.string().email(),
     password: z.string().min(8),
   })
@@ -25,4 +23,15 @@ export const mapelFormSchema = () => z.object({
   kelas: z.string(),
   deskripsi: z.string().min(3),
   image_url: z.string().optional(),
+})
+
+export const nilaiFormSchema = () => z.object({
+  value: z.array(z.number()),
+  persentase: z.array(z.number()),
+  name: z.array(z.string()),
+  guru: z.string(),
+  kelas: z.string(),
+  final: z.number(),
+  user: z.string(),
+  matapelajaran: z.string(),
 })

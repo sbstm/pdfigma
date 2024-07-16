@@ -1,8 +1,8 @@
 'use client'
 import React from 'react'
-import { ChevronDownIcon, SlashIcon } from '@radix-ui/react-icons'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { SidebarLinks } from '@/constants/SidebarLinks'
 
 import {
   Breadcrumb,
@@ -18,6 +18,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { ChevronDownIcon } from '@radix-ui/react-icons'
 
 interface BreadcrumbLinkData {
   href: string
@@ -26,6 +27,7 @@ interface BreadcrumbLinkData {
 
 const Road: React.FC = () => {
   const currentPath = usePathname()
+  const [isMenuOpen, setIsMenuOpen] = React.useState(false)  
 
   const getBreadcrumbLinks = (): BreadcrumbLinkData[] => {
     const pathSegments = currentPath.split('/').filter(Boolean)
@@ -58,13 +60,20 @@ const Road: React.FC = () => {
 
           <BreadcrumbItem>
             <DropdownMenu>
-              <DropdownMenuTrigger className="flex items-center gap-1">
-                <ChevronDownIcon />
+              <DropdownMenuTrigger className="flex items-center gap-1" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+               <ChevronDownIcon />
               </DropdownMenuTrigger>
               <DropdownMenuContent align="start">
-                <DropdownMenuItem>Documentation</DropdownMenuItem>
-                <DropdownMenuItem>Themes</DropdownMenuItem>
-                <DropdownMenuItem>GitHub</DropdownMenuItem>
+              {SidebarLinks.map((item : any) => (
+                <Link
+                  key={item.label}
+                  href={item.route}
+                  >
+
+                <DropdownMenuItem>{item.label}</DropdownMenuItem>
+                  </Link>
+              
+              ))}
               </DropdownMenuContent>
             </DropdownMenu>
           </BreadcrumbItem>

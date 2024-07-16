@@ -1,9 +1,18 @@
-import '../globals.css'
+import Navigation from "@/components/Navigation"
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode
-}>) {
-  return <div className="w-screen">{children}</div>
-}
+
+export default async function RootLayout({
+    children,
+  }: Readonly<{
+    children: React.ReactNode
+  }>) {
+    return (
+        <div>
+            <div>
+
+            {children}
+            </div>
+        </div>
+    )
+  }
+  

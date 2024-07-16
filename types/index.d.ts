@@ -13,6 +13,12 @@ declare interface UserParams {
   nis: string!;
   kelas: string!;
   matapelajaran: string!;
+  id: string;
+}
+declare interface RowData {
+  name: string;
+  value: number; // Store as a string initially
+  percentage: number; // Store as a string initially
 }
 
 declare interface ActivityParams {
@@ -56,10 +62,14 @@ declare interface GrubParams {
 }
 
 declare interface NilaiParams {
-  nilai: number;
-  user?: User;
-  matapelajaran: Matapelajaran;
-  grub?: Grub;
+  value: number[];
+  persentase: number[];
+  name: string[];
+  kelas?: string;
+  guru?: string;
+  final?: number;
+  user?: string;
+  matapelajaran?: string;
 }
 
 declare interface signInProps {
@@ -92,6 +102,22 @@ enum Jenis {
   "figma",
   "quiz",
   "form",
+}
+
+declare interface SidebarLink {
+  route: string;
+  label: string;
+  icon: React.ElementType; // Mendefinisikan tipe data untuk ikon
+}
+
+declare interface Theme {
+  name: string;
+  color: string;
+  label: string;
+}
+declare interface Kelas {
+  value: string;
+  label: string;
 }
 
 // Define subMapel and grub relationships
