@@ -19,10 +19,11 @@ export async function createNilai(final: number,value: number[], persentase: num
     const data = await database.createDocument(
       DATABASE_ID!,
       NILAI_COLLECTION_ID!,
-      kelas+ID.unique( ),
+      ID.unique( ),
       {
         final,
         value,
+        kelas,
         persentase,
         matapelajaran,
         name,
@@ -42,12 +43,13 @@ export async function createNilai(final: number,value: number[], persentase: num
   }
 }
 
-export async function getNilai() {
+export async function getNilai(kelas: string, matapelajaran: string) {
   try {
     const { database } = await createAdminClient();
     const data = await database.listDocuments(
       DATABASE_ID!,
-      NILAI_COLLECTION_ID!
+      NILAI_COLLECTION_ID!,
+      [Query.equal( 'kelas', kelas), Query.equal('matapelajaran', matapelajaran)]
     );
     return data;
   } catch (error: any) {
@@ -61,38 +63,37 @@ export async function getNilai() {
     }
   }
 }
-export async function getaNilai(idNilai: string) {
+export async function getaNilai(temp: string) {
   try {
     const { database } = await createAdminClient();
     const data = await database.listDocuments(
       DATABASE_ID!,
       NILAI_COLLECTION_ID!,
-      [Query.equal('$id',[idNilai])]
+      [Query.equal('$id', temp)]
     );
     return data
   } catch (error: any) {
     console.error("Error creating Nilai document:", error);
     if (error.response && error.response.status === 401) {
-      // Unauthorized access
       throw new Error("Unauthorized: You are not allowed to read a Nilai.");
     } else {
-      // Generic error
       throw new Error("Failed to read Nilai.");
     }
   }
 }
 
-export async function updateNilai(idNilai: string,data: NilaiParams) {
+export async function updateNilai(documentId: string, newValues: number[]) {
   try {
     const { database } = await createAdminClient()
+    const payload = {
+      value: newValues,
+      // Tambahkan field lain jika diperlukan (misalnya, tanggal update)
+    };
     const response = await database.updateDocument(
       DATABASE_ID!,
       NILAI_COLLECTION_ID!,
-      idNilai,
-      {
-        data
-      }
-
+      documentId,
+      payload
     );
     return response;
 

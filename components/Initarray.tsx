@@ -92,6 +92,7 @@ const Initarray = () => {
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     const final = rows.reduce((acc, row) => {
+      
       return acc + row.percentage;
     }, 0);
     const finalValue = rows.reduce((acc, row) => {
@@ -102,32 +103,40 @@ const Initarray = () => {
     }, 0);
     data.final = final;
     data.value = rows.map(() => 0);
-    data.persentase = rows.map((row) => row.percentage/100);
+    data.persentase = rows.map((row) => row.percentage / 100);
     data.name = rows.map((row) => row.name);
+    console.log(data);
     console.log(data.kelas);
     console.log(finalPercentage);
     if (finalPercentage !== 100) {
       alert("Percentage must be 100");
       return;
-      console.log(data);
-    }else{
+    } else {
       const loop = await getUserClass("10A");
       try {
-        loop.map(async (item:any) => {
+        loop.map(async (item: any) => {
           data.user = item.$id;
-          const result = await createNilai(data.final, data.value, data.persentase, data.matapelajaran, data.name, data.kelas, data.user);
+          const result = await createNilai(
+            data.final,
+            data.value,
+            data.persentase,
+            data.matapelajaran,
+            data.name,
+            data.kelas,
+            data.user
+          );
           console.log(result);
-        })
+        });
         alert("data berhasil diinput");
       } catch (error) {
         console.error(error);
       }
     }
   };
-  
+
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}> 
+      <form onSubmit={form.handleSubmit(onSubmit)}>
         <Drawer>
           <DrawerTrigger>Open</DrawerTrigger>
           <DrawerContent>
@@ -141,7 +150,7 @@ const Initarray = () => {
                   control={form.control}
                   name="matapelajaran"
                   render={({ field }) => (
-                    <Select>
+                    <Select  onValueChange={field.onChange}>
                       <SelectTrigger className="">
                         <SelectValue placeholder="Mata Pelajaran" />
                       </SelectTrigger>
@@ -149,7 +158,7 @@ const Initarray = () => {
                         <SelectGroup>
                           <SelectLabel>Select</SelectLabel>
                           {mapel.map((item) => (
-                            <SelectItem  value={item.$id ?? ""}>
+                            <SelectItem value={item.$id ?? ""}>
                               {item.name}
                             </SelectItem>
                           ))}
@@ -159,10 +168,10 @@ const Initarray = () => {
                   )}
                 />
                 <FormField
-                control={form.control}
-                name="kelas"
-                render={({ field }) => (
-                  <Select onValueChange={field.onChange}>
+                  control={form.control}
+                  name="kelas"
+                  render={({ field }) => (
+                    <Select onValueChange={field.onChange}>
                       <Label htmlFor="kelas">Kelas</Label>
                       <SelectTrigger className="">
                         <SelectValue placeholder="kelas" />
@@ -178,19 +187,18 @@ const Initarray = () => {
                         </SelectGroup>
                       </SelectContent>
                     </Select>
-
-                )}
+                  )}
                 />
               </div>
             </DrawerDescription>
-            <div className="flex justify-center items-center w-full">
+            <div className="flex justify-center items-center w-full p-5">
               <Table className="w-auto m-auto">
                 <TableHeader>
                   <TableRow>
                     <TableHead className="w-[100px]">User</TableHead>
                     <TableHead className="w-[100px]">Percentage</TableHead>
-                    <TableHead>
-                      <Button onClick={addRow}>Add Row</Button>
+                    <TableHead >
+                      <Button className="rounded-xl" onClick={addRow}>Add Row</Button>
                     </TableHead>
                   </TableRow>
                 </TableHeader>
@@ -232,8 +240,9 @@ const Initarray = () => {
                           )}
                         />
                       </TableCell>
-                      <TableCell>
+                      <TableCell align="center">
                         <Button
+                        className="rounded-xl"
                           variant="destructive"
                           onClick={() => removeRow(index)}
                         >
@@ -247,7 +256,7 @@ const Initarray = () => {
             </div>
 
             <DrawerFooter>
-              <Button onClick={onSubmit}>Submit</Button>
+              <Button onClick={() => onSubmit(form.getValues())}>Submit</Button>
               <DrawerClose>
                 <Button variant="outline">Cancel</Button>
               </DrawerClose>

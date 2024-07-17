@@ -113,7 +113,6 @@ declare interface SidebarLink {
 declare interface Theme {
   name: string;
   color: string;
-  label: string;
 }
 declare interface Kelas {
   value: string;

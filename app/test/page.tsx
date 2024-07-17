@@ -2,7 +2,6 @@
 import Test from "@/components/Test";
 import { Input } from "@/components/ui/input";
 import React, { useState } from "react";
-import DOMPurify from "dompurify";
 import { DrawerDialog } from "@/components/Editnilai";
 
 interface EmbedSchema {
@@ -11,10 +10,10 @@ interface EmbedSchema {
 }
 
 const page = () => {
-
-return (
-<div className="">
-  <DrawerDialog /> 
+  
+  return (
+    <div className="">
+  
 </div>
 
 );
@@ -22,6 +21,7 @@ return (
 
 export default page;
 
+// import DOMPurify from "dompurify";
 // const [embeds, setEmbeds] = useState<EmbedSchema[]>([{ code: "", nama: "" }]);
 
 // const handleInputChange = (

@@ -21,7 +21,7 @@ import {
   Truck,
   Users2,
 } from "lucide-react";
-import { Theme } from "@/constants/Theme";
+import { Themes } from "@/constants/Theme";
 import { Switch } from "./ui/switch";
 import {
   Select,
@@ -77,17 +77,18 @@ const Navigation = (user : any) => {
     setSelectedTheme(value);
     await saveTheme(); // Await the theme saving process
   };
-
   const saveTheme = async () => {
     if (!user) return;
     const theme = selectedTheme + (isDarkMode ? "-dark" : "");
     try {
       document.documentElement.className = theme;
-      // Potentially update the user's theme preference in your database here
     } catch (error) {
       console.error("Failed to save theme:", error);
     }
   };
+  useEffect(() => {
+    saveTheme();
+  } , [selectedTheme, isDarkMode]);
 
   return (
     <>
@@ -102,7 +103,7 @@ const Navigation = (user : any) => {
               <span className="sr-only">Acme Inc</span>
             </Link>
             {SidebarLinks.map((item: any) => (
-              <Tooltip>
+              <Tooltip key={item.label}>
                 <TooltipTrigger asChild>
                   <Link
                     href={item.route}
@@ -196,7 +197,7 @@ const Navigation = (user : any) => {
             <SelectValue placeholder="Select a model" />
           </SelectTrigger>
           <SelectContent>
-            {Theme.map((theme) => (
+            {Themes.map((theme) => (
               <SelectItem key={theme.name} value={theme.name}>
                 <div className="flex items-start gap-3 text-muted-foreground">
                   <PaintBucket
@@ -208,7 +209,7 @@ const Navigation = (user : any) => {
                     className="size-5"
                     />
                   <div className="grid gap-0.5">
-                    <p>{theme.label}</p>
+                    <p>{theme.name}</p>
                   </div>
                 </div>
               </SelectItem>
