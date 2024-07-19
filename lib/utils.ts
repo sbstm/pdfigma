@@ -25,6 +25,13 @@ export const mapelFormSchema = () => z.object({
   image_url: z.string().optional(),
 })
 
+export const submateriFormSchema = () => z.object({
+  name: z.string().min(3),
+  link_buku: z.string().url(),
+  link_figma: z.string().url(),
+  embed_code: z.string().optional(),
+})
+
 export const nilaiFormSchema = () => z.object({
   value: z.array(z.number()),
   persentase: z.array(z.number()),

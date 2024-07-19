@@ -40,6 +40,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Form, FormField } from "./ui/form";
 import { createNilai } from "@/lib/actions/nilai.actions";
+import { toast } from "./ui/use-toast";
 
 const Initarray = () => {
   const [mapel, setMapel] = useState<MapelParams[]>([]);
@@ -105,9 +106,6 @@ const Initarray = () => {
     data.value = rows.map(() => 0);
     data.persentase = rows.map((row) => row.percentage / 100);
     data.name = rows.map((row) => row.name);
-    console.log(data);
-    console.log(data.kelas);
-    console.log(finalPercentage);
     if (finalPercentage !== 100) {
       alert("Percentage must be 100");
       return;
@@ -127,7 +125,11 @@ const Initarray = () => {
           );
           console.log(result);
         });
-        alert("data berhasil diinput");
+        toast({
+          variant: "default",
+          title: "Success",
+          description: "data berhasil dibuat",
+        });
       } catch (error) {
         console.error(error);
       }
@@ -138,13 +140,15 @@ const Initarray = () => {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <Drawer>
+          
           <DrawerTrigger>Open</DrawerTrigger>
           <DrawerContent>
+          <div className="m-10">
             <DrawerHeader>
               <DrawerTitle>Buat Tabel Nilai</DrawerTitle>
             </DrawerHeader>
             <DrawerDescription>
-              <div className="grid gap-2">
+              <div className="grid gap-2 p-4">
                 <Label htmlFor="Mapel">Mata Pelajaran</Label>
                 <FormField
                   control={form.control}
@@ -194,11 +198,11 @@ const Initarray = () => {
             <div className="flex justify-center items-center w-full p-5">
               <Table className="w-auto m-auto">
                 <TableHeader>
-                  <TableRow>
-                    <TableHead className="w-[100px]">User</TableHead>
-                    <TableHead className="w-[100px]">Percentage</TableHead>
-                    <TableHead >
-                      <Button className="rounded-xl" onClick={addRow}>Add Row</Button>
+                  <TableRow >
+                    <TableHead className="w-[25%]">User</TableHead>
+                    <TableHead className="w-[25%]">Percentage</TableHead>
+                    <TableHead className="w-[10%] " align="center">
+                      <Button className="rounded-xl m-auto " onClick={addRow}>Add Row</Button>
                     </TableHead>
                   </TableRow>
                 </TableHeader>
@@ -257,11 +261,13 @@ const Initarray = () => {
 
             <DrawerFooter>
               <Button onClick={() => onSubmit(form.getValues())}>Submit</Button>
-              <DrawerClose>
-                <Button variant="outline">Cancel</Button>
+              <DrawerClose className="w-full">
+                <Button className="w-full" variant="outline">Cancel</Button>
               </DrawerClose>
             </DrawerFooter>
+          </div>
           </DrawerContent>
+          
         </Drawer>
       </form>
     </Form>

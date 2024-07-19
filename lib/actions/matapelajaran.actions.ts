@@ -44,7 +44,7 @@ export async function readMatapelajaran() {
       DATABASE_ID!,
       MATAPELAJARAN_COLLECTION_ID!,
     )
-    return parseStringify(response.documents)
+    return response
   } catch (error: any) {
     console.error('Error creating Matapelajaran document:', error)
     if (error.response && error.response.status === 401) {

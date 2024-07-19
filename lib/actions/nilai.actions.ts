@@ -63,13 +63,13 @@ export async function getNilai(kelas: string, matapelajaran: string) {
     }
   }
 }
-export async function getaNilai(temp: string) {
+export async function getaNilai(kelas: string, matapelajaran: string, user: string) {
   try {
     const { database } = await createAdminClient();
     const data = await database.listDocuments(
       DATABASE_ID!,
       NILAI_COLLECTION_ID!,
-      [Query.equal('$id', temp)]
+      [Query.equal( 'kelas', kelas), Query.equal('matapelajaran', matapelajaran), Query.equal('user', user)]
     );
     return data
   } catch (error: any) {

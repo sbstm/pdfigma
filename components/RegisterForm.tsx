@@ -63,7 +63,6 @@ export function RegisterForm() {
         tanggal_lahir: data.tanggal_lahir,
         jk: data.jk || "", // Provide a default value for jk
       };
-
       const newUser = await signUp(userData);
       setUser(newUser);
       setIsLoading(false);
@@ -147,7 +146,7 @@ export function RegisterForm() {
                 render={({ field }) => (
                   <div className="grid gap-2">
                     <Label htmlFor="jk">Jenis Kelamin</Label>
-                    <Select >
+                    <Select  onValueChange={field.onChange} >
                       <SelectTrigger className="">
                         <SelectValue placeholder="Jenis Kelamin" />
                       </SelectTrigger>

@@ -114,6 +114,12 @@ declare interface Theme {
   name: string;
   color: string;
 }
+
+declare interface Themegrafik {
+  id: number;
+  name: string;
+  color: string;
+}
 declare interface Kelas {
   value: string;
   label: string;

@@ -8,6 +8,8 @@ const {
   APPWRITE_DATABASE_ID: DATABASE_ID,
   APPWRITE_USER_COLLECTION_ID: USER_COLLECTION_ID,
 } = process.env
+
+
 export const getUserInfo = async ({ userId }: getUserInfoProps) => {
   try {
     const { database } = await createAdminClient()
@@ -151,3 +153,30 @@ export const getTabelUser = async () => {
   }
 }
 
+
+export async function updateUser(documentId: string) {
+  try {
+    const { database } = await createAdminClient()
+    const payload = {
+      role: 'guru',
+    };
+    const response = await database.updateDocument(
+      DATABASE_ID!,
+      USER_COLLECTION_ID!,
+      documentId,
+      payload
+    );
+    return response;
+
+
+  } catch (error: any) {
+    console.error("Error creating Nilai document:", error);
+    if (error.response && error.response.status === 401) {
+    // Unauthorized access
+    throw new Error("Unauthorized: You are not allowed to create a Nilai.");
+    } else {
+    // Generic error
+    throw new Error("Failed to create Nilai.");
+    }
+}
+}
