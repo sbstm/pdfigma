@@ -1,98 +1,54 @@
 "use client";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import {
-  InputOTP,
-  InputOTPGroup,
-  InputOTPSlot,
-} from "@/components/ui/input-otp";
-import { Button } from "@/components/ui/button";
-import { toast } from "@/components/ui/use-toast";
-import { useEffect, useState } from "react";
-import { getLoggedInUser, updateUser } from "@/lib/actions/user.action";
 
-const FormSchema = z.object({
-  pin: z.string().min(6, {
-    message: "Your one-time password must be 6 characters.",
-  }),
-});
+import { useEffect, useState } from "react";
 
 const Page = () => {
-  const [dataUser, setDataUser] = useState<any>(null);
-  
-  const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
-    defaultValues: {
-      pin: "",
-    },
-  });
+  const [teamName, setTeamName] = useState("");
+  const [teamId, setTeamId] = useState("");
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await getLoggedInUser()
-        setDataUser(data);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    fetchData();
-  },[])
+  const [message, setMessage] = useState("");
 
-  async function onSubmit(data: z.infer<typeof FormSchema>) {
-    if (data.pin === "2103064") {
-      try {
-        await updateUser(dataUser.$id)
-        toast
-      } catch (err) {
-        console.error(err);
-      }
-    }
-  }
+  // const handleCreateGroup = async (event: React.FormEvent<HTMLFormElement>) => {
+  //   event.preventDefault();
+
+  //   try {
+  //     const response = await teams.create(teamId, teamName);
+  //     setMessage("Group created successfully!");
+  //     console.log("Group created successfully:", response);
+  //   } catch (error) {
+  //     setMessage("Error creating group. Please try again.");
+  //     console.error("Error creating group:", error);
+  //   }
+  // };
 
   return (
-    <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="w-2/3 space-y-6 mx-auto" // Center the form
-      >
-        <FormField
-          control={form.control}
-          name="pin"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>One-Time Password</FormLabel>
-              <FormControl>
-                <InputOTP maxLength={7} {...field}>
-                  <InputOTPGroup>
-                    {[...Array(7)].map((_, index) => (
-                      <InputOTPSlot key={index} index={index} />
-                    ))}
-                  </InputOTPGroup>
-                </InputOTP>
-              </FormControl>
-              <FormDescription>
-                Please enter the one-time password sent to your phone.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button type="submit">Submit</Button>
+    <div>
+      {/* <form onSubmit={}>
+        <div>
+          <label htmlFor="teamId">Team ID:</label>
+          <input
+            type="text"
+            id="teamId"
+            value={teamId}
+            onChange={(e) => setTeamId(e.target.value)}
+            required
+          />
+        </div>
+        <div>
+          <label htmlFor="teamName">Team Name:</label>
+          <input
+            type="text"
+            id="teamName"
+            value={teamName}
+            onChange={(e) => setTeamName(e.target.value)}
+            required
+          />
+        </div>
+        <button type="submit">Create Group</button>
       </form>
-    </Form>
+      {message && <p>{message}</p>} */}
+    </div>
   );
 };
 
 export default Page;
-

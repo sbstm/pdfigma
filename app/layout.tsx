@@ -16,7 +16,7 @@ export default async function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html >
+    <html className='Green-dark'>
       <body>
       <ThemeProvider>
      {children}

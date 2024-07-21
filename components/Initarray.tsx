@@ -29,6 +29,7 @@ import {
   TableBody,
   TableCell,
 } from "./ui/table";
+
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { getUserClass } from "@/lib/actions/user.action";
@@ -86,14 +87,13 @@ const Initarray = () => {
   useEffect(() => {
     const init = async () => {
       const data = await readMatapelajaran();
-      setMapel(data);
+      setMapel(data.documents);
     };
     init();
   }, []);
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     const final = rows.reduce((acc, row) => {
-      
       return acc + row.percentage;
     }, 0);
     const finalValue = rows.reduce((acc, row) => {
@@ -140,134 +140,145 @@ const Initarray = () => {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <Drawer>
-          
-          <DrawerTrigger>Open</DrawerTrigger>
+          <DrawerTrigger>
+            <Button className="m-5">Open</Button>
+          </DrawerTrigger>
           <DrawerContent>
-          <div className="m-10">
-            <DrawerHeader>
-              <DrawerTitle>Buat Tabel Nilai</DrawerTitle>
-            </DrawerHeader>
-            <DrawerDescription>
-              <div className="grid gap-2 p-4">
-                <Label htmlFor="Mapel">Mata Pelajaran</Label>
-                <FormField
-                  control={form.control}
-                  name="matapelajaran"
-                  render={({ field }) => (
-                    <Select  onValueChange={field.onChange}>
-                      <SelectTrigger className="">
-                        <SelectValue placeholder="Mata Pelajaran" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectGroup>
-                          <SelectLabel>Select</SelectLabel>
-                          {mapel.map((item) => (
-                            <SelectItem value={item.$id ?? ""}>
-                              {item.name}
-                            </SelectItem>
-                          ))}
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="kelas"
-                  render={({ field }) => (
-                    <Select onValueChange={field.onChange}>
-                      <Label htmlFor="kelas">Kelas</Label>
-                      <SelectTrigger className="">
-                        <SelectValue placeholder="kelas" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectGroup>
-                          <SelectLabel>Select</SelectLabel>
-                          {Kelas.map((item) => (
-                            <SelectItem key={item.value} value={item.value}>
-                              {item.label}
-                            </SelectItem>
-                          ))}
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
-                  )}
-                />
-              </div>
-            </DrawerDescription>
-            <div className="flex justify-center items-center w-full p-5">
-              <Table className="w-auto m-auto">
-                <TableHeader>
-                  <TableRow >
-                    <TableHead className="w-[25%]">User</TableHead>
-                    <TableHead className="w-[25%]">Percentage</TableHead>
-                    <TableHead className="w-[10%] " align="center">
-                      <Button className="rounded-xl m-auto " onClick={addRow}>Add Row</Button>
-                    </TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {rows.map((row, index) => (
-                    <TableRow key={index}>
-                      <TableCell>
-                        <FormField
-                          control={form.control}
-                          name="name"
-                          render={({ field }) => (
-                            <Input
-                              placeholder="jenis nilai"
-                              value={row.name}
-                              onChange={(e) =>
-                                handleInputChange(index, "name", e.target.value)
-                              }
-                            />
-                          )}
-                        />
-                      </TableCell>
-                      <TableCell>
-                        <FormField
-                          control={form.control}
-                          name="persentase"
-                          render={({ field }) => (
-                            <Input
-                              type="number"
-                              placeholder="Persentase"
-                              value={row.percentage}
-                              onChange={(e) =>
-                                handleInputChange(
-                                  index,
-                                  "percentage",
-                                  parseFloat(e.target.value)
-                                )
-                              }
-                            />
-                          )}
-                        />
-                      </TableCell>
-                      <TableCell align="center">
-                        <Button
-                        className="rounded-xl"
-                          variant="destructive"
-                          onClick={() => removeRow(index)}
-                        >
-                          Remove
+            <div className="m-10">
+              <DrawerHeader>
+                <DrawerTitle>Buat Tabel Nilai</DrawerTitle>
+              </DrawerHeader>
+              <DrawerDescription>
+                <div className="grid gap-2 p-4">
+                  <Label htmlFor="Mapel">Mata Pelajaran</Label>
+                  <FormField
+                    control={form.control}
+                    name="matapelajaran"
+                    render={({ field }) => (
+                      <Select onValueChange={field.onChange}>
+                        <SelectTrigger className="">
+                          <SelectValue placeholder="Mata Pelajaran" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectGroup>
+                            <SelectLabel>Select</SelectLabel>
+                            {mapel.map((item) => (
+                              <SelectItem value={item.$id ?? ""}>
+                                {item.name}
+                              </SelectItem>
+                            ))}
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="kelas"
+                    render={({ field }) => (
+                      <Select onValueChange={field.onChange}>
+                        <Label htmlFor="kelas">Kelas</Label>
+                        <SelectTrigger className="">
+                          <SelectValue placeholder="kelas" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectGroup>
+                            <SelectLabel>Select</SelectLabel>
+                            {Kelas.map((item) => (
+                              <SelectItem key={item.value} value={item.value}>
+                                {item.label}
+                              </SelectItem>
+                            ))}
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                    )}
+                  />
+                </div>
+              </DrawerDescription>
+              <div className="flex justify-center items-center w-full p-5">
+                <Table className="w-auto m-auto">
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead className="w-[25%]">Jenis Nilai
+                      </TableHead>
+                      <TableHead className="w-[25%]">Percentage</TableHead>
+                      <TableHead className="w-[10%] " align="center">
+                        <Button className="rounded-xl m-auto " onClick={addRow}>
+                          Add Row
                         </Button>
-                      </TableCell>
+                      </TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
+                  </TableHeader>
+                  <TableBody>
+                    {rows.map((row, index) => (
+                      <TableRow key={index}>
+                        <TableCell>
+                          <FormField
+                            control={form.control}
+                            name="name"
+                            render={({ field }) => (
+                              <Input
+                                placeholder="jenis nilai"
+                                value={row.name}
+                                onChange={(e) =>
+                                  handleInputChange(
+                                    index,
+                                    "name",
+                                    e.target.value
+                                  )
+                                }
+                              />
+                            )}
+                          />
+                        </TableCell>
+                        <TableCell>
+                          <FormField
+                            control={form.control}
+                            name="persentase"
+                            render={({ field }) => (
+                              <Input
+                                type="number"
+                                placeholder="Persentase"
+                                value={row.percentage}
+                                onChange={(e) =>
+                                  handleInputChange(
+                                    index,
+                                    "percentage",
+                                    parseFloat(e.target.value)
+                                  )
+                                }
+                              />
+                            )}
+                          />
+                        </TableCell>
+                        <TableCell align="center">
+                          <Button
+                            className="rounded-xl"
+                            variant="destructive"
+                            onClick={() => removeRow(index)}
+                          >
+                            Remove
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
 
-            <DrawerFooter>
-              <Button onClick={() => onSubmit(form.getValues())}>Submit</Button>
-              <DrawerClose className="w-full">
-                <Button className="w-full" variant="outline">Cancel</Button>
-              </DrawerClose>
-            </DrawerFooter>
-          </div>
+              <DrawerFooter>
+                <Button onClick={() => onSubmit(form.getValues())}>
+                  Submit
+                </Button>
+                <DrawerClose className="w-full">
+                  <Button className="w-full" variant="outline">
+                    Cancel
+                  </Button>
+                </DrawerClose>
+              </DrawerFooter>
+            </div>
           </DrawerContent>
-          
         </Drawer>
       </form>
     </Form>

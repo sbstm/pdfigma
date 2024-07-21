@@ -30,7 +30,7 @@ import Link from "next/link";
 import DOMPurify from "dompurify";
 import { Skeleton } from "./ui/skeleton";
 
-const CreateSubmateri = React.lazy(() => import('./CreateSubmateri'));
+const CreateSubmateri = React.lazy(() => import("./CreateSubmateri"));
 
 const RuangKelas = () => {
   const [dataMataPelajaran, setDataMataPelajaran] = useState<any[]>([]);
@@ -100,10 +100,14 @@ const RuangKelas = () => {
                                 className="flex justify-between w-full items-stretch"
                               >
                                 <div className="flex flex-col gap-4">
-                                  <h4>
-                                    {subItem.name}{" "}
-                                    {subItem.selesai ? "🫰" : "👎"}
-                                  </h4>
+                                  <Link
+                                    href={`/kelas/${subItem.name}`}
+                                  >
+                                    <h4>
+                                      {subItem.name}{" "}
+                                      {subItem.selesai ? "🫰" : "👎"}
+                                    </h4>
+                                  </Link>
                                   {subItem.link_buku && (
                                     <Link href={subItem.link_buku}>
                                       <Button>Buku</Button>

@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { SidebarLinks } from '@/constants/SidebarLinks'
@@ -8,7 +8,6 @@ import {
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
-  BreadcrumbEllipsis,
   BreadcrumbList,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb'
@@ -27,22 +26,27 @@ interface BreadcrumbLinkData {
 
 const Road: React.FC = () => {
   const currentPath = usePathname()
-  const [isMenuOpen, setIsMenuOpen] = React.useState(false)  
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [breadcrumbLinks, setBreadcrumbLinks] = useState<BreadcrumbLinkData[]>([])
 
-  const getBreadcrumbLinks = (): BreadcrumbLinkData[] => {
-    const pathSegments = currentPath.split('/').filter(Boolean)
+  useEffect(() => {
+    const getBreadcrumbLinks = (): BreadcrumbLinkData[] => {
+      const pathSegments = currentPath.split('/').filter(Boolean)
+      return pathSegments.map((segment, index) => ({
+        href: `/${pathSegments.slice(0, index + 1).join('/')}`,
+        label: decodeURIComponent(segment.replace(/%20/g, ' ')), // Decoding URL and replacing %20 with space
+      }))
+    }
 
-    return pathSegments.map((segment, index) => ({
-      href: `/${pathSegments.slice(0, index + 1).join('/')}`,
-      label: decodeURIComponent(segment),
-    }))
-  }
+    setBreadcrumbLinks(getBreadcrumbLinks())
+  }, [currentPath])
+
   return (
     <div className="py-5">
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbSeparator />
-          {getBreadcrumbLinks().map((link, index) => (
+          {breadcrumbLinks.map((link, index) => (
             <React.Fragment key={index}>
               <BreadcrumbItem>
                 <Link href={link.href} legacyBehavior passHref>
@@ -50,10 +54,8 @@ const Road: React.FC = () => {
                 </Link>
               </BreadcrumbItem>
 
-              {index < getBreadcrumbLinks().length - 1 && (
-                <BreadcrumbSeparator>
-                  <BreadcrumbSeparator />
-                </BreadcrumbSeparator>
+              {index < breadcrumbLinks.length - 1 && (
+                <BreadcrumbSeparator />
               )}
             </React.Fragment>
           ))}
@@ -61,19 +63,14 @@ const Road: React.FC = () => {
           <BreadcrumbItem>
             <DropdownMenu>
               <DropdownMenuTrigger className="flex items-center gap-1" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-               <ChevronDownIcon />
+                <ChevronDownIcon />
               </DropdownMenuTrigger>
               <DropdownMenuContent align="start">
-              {SidebarLinks.map((item : any) => (
-                <Link
-                  key={item.label}
-                  href={item.route}
-                  >
-
-                <DropdownMenuItem>{item.label}</DropdownMenuItem>
+                {SidebarLinks.map((item: any) => (
+                  <Link key={item.label} href={item.route} legacyBehavior passHref>
+                    <DropdownMenuItem>{item.label}</DropdownMenuItem>
                   </Link>
-              
-              ))}
+                ))}
               </DropdownMenuContent>
             </DropdownMenu>
           </BreadcrumbItem>

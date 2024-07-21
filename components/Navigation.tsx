@@ -1,6 +1,9 @@
 "use client";
+
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import {
   ChevronLeft,
   ChevronRight,
@@ -30,12 +33,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Label } from "./ui/label";
 import { PaintBucket } from "lucide-react";
 import { Button } from "./ui/button";
 import {
   DropdownMenu,
-  DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
@@ -50,33 +51,36 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { SidebarLinks } from "@/constants/SidebarLinks";
-import { useEffect, useState } from "react";
-import { usePathname, useRouter } from "next/navigation";
 import Road from "./Road";
 import { signOut } from "@/lib/actions/user.action";
 
-const Navigation = (user : any) => {
+const Navigation = (user: any) => {
   const [isMenuOpen, setIsMenuOpen] = useState("");
   const location = usePathname();
   const router = useRouter();
-  useEffect( () => {
+
+  useEffect(() => {
     setIsMenuOpen(location);
   }, [location]);
 
-  const handlelogout = async () => {
-    await signOut()
-    router.push('/login')
-  }
+  const handleLogout = async () => {
+    await signOut();
+    router.push("/login");
+  };
+
   const [isDarkMode, setIsDarkMode] = useState(true);
-  const [selectedTheme, setSelectedTheme] = useState("Zinc");
+  const [selectedTheme, setSelectedTheme] = useState("Green");
+
   const toggleDarkMode = async () => {
     setIsDarkMode(!isDarkMode);
-    await saveTheme(); 
+    await saveTheme();
   };
-  const handleThemeChange = async (value: string) => {
+
+  const handleThemeChange = async (value: any) => {
     setSelectedTheme(value);
-    await saveTheme(); // Await the theme saving process
+    await saveTheme();
   };
+
   const saveTheme = async () => {
     if (!user) return;
     const theme = selectedTheme + (isDarkMode ? "-dark" : "");
@@ -86,9 +90,10 @@ const Navigation = (user : any) => {
       console.error("Failed to save theme:", error);
     }
   };
+
   useEffect(() => {
     saveTheme();
-  } , [selectedTheme, isDarkMode]);
+  }, [selectedTheme, isDarkMode]);
 
   return (
     <>
@@ -102,7 +107,7 @@ const Navigation = (user : any) => {
               <Package2 className="h-4 w-4 transition-all group-hover:scale-110" />
               <span className="sr-only">Acme Inc</span>
             </Link>
-            {SidebarLinks.map((item: any) => (
+            {SidebarLinks.map((item) => (
               <Tooltip key={item.label}>
                 <TooltipTrigger asChild>
                   <Link
@@ -136,7 +141,7 @@ const Navigation = (user : any) => {
             </Tooltip>
           </div>
         </div>
-        <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14 ">
+        <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
           <header className="sticky justify-between top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
             <Sheet>
               <SheetTrigger asChild>
@@ -155,7 +160,7 @@ const Navigation = (user : any) => {
                       <Package2 className="h-5 w-5 transition-all group-hover:scale-110" />
                       <span className="sr-only">PDFigma</span>
                     </Link>
-                    {SidebarLinks.map((item: any) => (
+                    {SidebarLinks.map((item) => (
                       <Link
                         key={item.label}
                         href={item.route}
@@ -170,7 +175,7 @@ const Navigation = (user : any) => {
                       </Link>
                     ))}
                   </div>
-                  <div className="">
+                  <div>
                     <Link
                       href="/settings"
                       className={`flex items-center gap-4 px-2.5 text-lg font-medium ${
@@ -187,69 +192,75 @@ const Navigation = (user : any) => {
               </SheetContent>
             </Sheet>
             <Road />
- <div className="flex flex-row items-center gap-3">
-      <div className="grid gap-3">
-        <Select value={selectedTheme} onValueChange={handleThemeChange}>
-          <SelectTrigger
-            id="model"
-            className="items-start [&_[data-description]]:hidden"
-          >
-            <SelectValue placeholder="Select a model" />
-          </SelectTrigger>
-          <SelectContent>
-            {Themes.map((theme) => (
-              <SelectItem key={theme.name} value={theme.name}>
-                <div className="flex items-start gap-3 text-muted-foreground">
-                  <PaintBucket
-                    style={{
-                      color: theme.color,
-                      padding: "2px 4px",
-                      borderRadius: "4px",
-                    }}
-                    className="size-5"
-                    />
-                  <div className="grid gap-0.5">
-                    <p>{theme.name}</p>
-                  </div>
-                </div>
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
-      <div className="grid gap-3">
-        <Switch
-          id="theme-mode"
-          checked={isDarkMode}
-          onCheckedChange={toggleDarkMode}
-          />
-      </div>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  className="overflow-hidden rounded-full"
+            <div className="flex flex-row items-center gap-3">
+              <div className="grid gap-3">
+                <Select value={selectedTheme} onValueChange={handleThemeChange}>
+                  <SelectTrigger
+                    id="model"
+                    className="items-start [&_[data-description]]:hidden"
                   >
-                  <Image
-                    src="/avatar.jpeg"
-                    width={36}
-                    height={36}
-                    alt="Avatar"
+                    <SelectValue placeholder="Select a model" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {Themes.map((theme) => (
+                      <SelectItem key={theme.name} value={theme.name}>
+                        <div className="flex items-start gap-3 text-muted-foreground">
+                          <PaintBucket
+                            style={{
+                              color: theme.color,
+                              padding: "2px 4px",
+                              borderRadius: "4px",
+                            }}
+                            className="size-5"
+                          />
+                          <div className="grid gap-0.5">
+                            <p>{theme.name}</p>
+                          </div>
+                        </div>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="grid gap-3">
+                <Switch
+                  id="theme-mode"
+                  checked={isDarkMode}
+                  onCheckedChange={toggleDarkMode}
+                />
+              </div>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="outline"
+                    size="icon"
                     className="overflow-hidden rounded-full"
+                  >
+                    <Image
+                      src="/avatar.jpeg"
+                      width={36}
+                      height={36}
+                      alt="Avatar"
+                      className="overflow-hidden rounded-full"
                     />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem ><Link href={"/login"}>Login</Link></DropdownMenuItem>
-                <DropdownMenuItem><Link href={"/register"}>Register</Link></DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={handlelogout}>Logout</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-                    </div>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem>
+                    <Link href="/login">Login</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Link href="/register">Register</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={handleLogout}>
+                    Logout
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
           </header>
         </div>
       </TooltipProvider>

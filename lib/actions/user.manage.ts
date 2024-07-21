@@ -1,20 +1,24 @@
+"use server";
+import { Teams } from "node-appwrite";
+
 const sdk = require("node-appwrite");
 
 const client = new sdk.Client()
   .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT!)
   .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT!)
-  .setKey(process.env.APPWRITE_API_KEY!);
 
-const users  = new sdk.Users(client);
+const teams = new Teams(client);
 
-export async function updateLabel(userId: string) {
+
+const handleAddMember = async (teamId :any, userId:any, email:any, roles:any) => {
   try {
-    const promise = users.updateLabels(
-      userId,
-      [ 'guru' ]
-  );
-    console.log(`Label updated for user ${userId}`);
+    const response = await teams.createMembership(
+      teamId,
+      email,
+      roles, 
+    );
+    console.log('Membership created successfully:', response);
   } catch (error) {
-    console.error(`Error updating label for user ${userId}:`, error);
+    console.error('Error creating membership:', error);
   }
-}
+};

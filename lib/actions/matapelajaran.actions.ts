@@ -12,9 +12,7 @@ const {
 } = process.env
 
 export async function createMatapelajaran(data: MapelParams) {
-  const { name, kelas,deskripsi,image_url} = data
   try {
-    const documentId = ID.unique()
     const adminClient = await createAdminClient()
     const response = await adminClient.database.createDocument(
       DATABASE_ID!,
