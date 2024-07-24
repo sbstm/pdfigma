@@ -29,7 +29,6 @@ const CreateSubmateri = ({ id }: { id: any }) => {
       selesai: false,
       matapelajaran: id,
     };
-    console.log(submateri);
     try {
       await CreateSubMapel(submateri);
       toast({

@@ -42,3 +42,9 @@ export const nilaiFormSchema = () => z.object({
   user: z.string(),
   matapelajaran: z.string(),
 })
+
+export const guruFormSchema = () => z.object({
+  matapelajaran : z.string(),
+  kelas: z.array(z.string()),
+  user: z.string(),
+})

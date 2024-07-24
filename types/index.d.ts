@@ -71,6 +71,11 @@ declare interface NilaiParams {
   user?: string;
   matapelajaran?: string;
 }
+declare interface GuruParams{
+  matapelajaran: string;
+  kelas: string[];
+  user: string;
+}
 
 declare interface signInProps {
   email: string;

@@ -1,5 +1,4 @@
 "use client";
-
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { selectSubMapel } from "@/lib/actions/submapel.actions";
@@ -9,12 +8,11 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Calendar } from "@/components/ui/calendar";
 
 const page = ({ params }: { params: { slug: string } }) => {
-  const [data, setData] = React.useState<any[]>([]);
-
+  const [data, setData] = useState<any[]>([]);
   const editname = params.slug.replace(/%20/g, " ");
 
   useEffect(() => {
@@ -22,7 +20,6 @@ const page = ({ params }: { params: { slug: string } }) => {
       try {
         const response = await selectSubMapel(editname);
         setData(response.documents);
-        console.log(response.documents);
       } catch (err) {
         console.error(err);
       }
@@ -32,7 +29,7 @@ const page = ({ params }: { params: { slug: string } }) => {
 
   return (
     <div key={editname}>
-      {data.map((item) => (
+      {data.map((item: any) => (
         <>
           <Label key={item.$id}>{item.name}</Label>
           <Switch value={item.selesai} />
@@ -44,7 +41,6 @@ const page = ({ params }: { params: { slug: string } }) => {
                   <div className="grid grid-cols-2">
                     <div className="">
                       <p>{activity.materi}</p>
-                      <Switch value={activity.selesai} />
                     </div>
                     <div className="">
                       <Calendar

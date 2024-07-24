@@ -8,7 +8,6 @@ const TabelNilai = async () => {
     <>
       <div className="grid grid-cols-1 gap-5 px-10 ">
         <Leger />
-      <Initarray/>
       </div>
     </>
   );

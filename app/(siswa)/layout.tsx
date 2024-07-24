@@ -13,8 +13,8 @@ export default async function RootLayout({
     if (!loggedIn) redirect('/login')
     return (
         <div >
-            <Navigation user={loggedIn}/>
-            <div className={cn("ml-14")}>
+            <Navigation />
+            <div className={"mt-6 sm:ml-14 sm:mt-0"}>
 
             {children}
             </div>
