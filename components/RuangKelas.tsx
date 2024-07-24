@@ -2,16 +2,6 @@
 import React, { useEffect, useState, Suspense } from "react";
 import { cn } from "@/lib/utils";
 import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "@/components/ui/drawer";
-import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
@@ -25,13 +15,11 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { CaretSortIcon } from "@radix-ui/react-icons";
-import { readMatapelajaran, readMatapelajaranSiswa } from "@/lib/actions/matapelajaran.actions";
+import { readMatapelajaranSiswa } from "@/lib/actions/matapelajaran.actions";
 import Link from "next/link";
 import DOMPurify from "dompurify";
 import { Skeleton } from "./ui/skeleton";
 import { getLoggedInUser } from "@/lib/actions/user.action";
-
-const CreateSubmateri = React.lazy(() => import("./CreateSubmateri"));
 
 const RuangKelas = () => {
   const [dataUser, setDataUser] = useState<any>(null);
@@ -93,7 +81,6 @@ const RuangKelas = () => {
                     <CollapsibleContent>
                       <div className="space-y-2">
                         <Suspense fallback={<div>Loading...</div>}>
-                          <CreateSubmateri id={item.$id} />
                         </Suspense>
                         {item.subMapel.map((subItem: any) => (
                           <div

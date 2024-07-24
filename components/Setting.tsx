@@ -19,7 +19,6 @@ import {
 import { Themes } from "@/constants/Theme";
 import { PaintBucket, Settings } from "lucide-react";
 import { Switch } from "./ui/switch";
-import { ScrollArea } from "./ui/scroll-area";
 
 const Setting = () => {
   const [isDarkMode, setIsDarkMode] = useState(true);

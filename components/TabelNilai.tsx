@@ -1,7 +1,6 @@
 import React from "react";
 import Leger from "./Leger";
 
-import Initarray from "./Initarray";
 
 const TabelNilai = async () => {
   return (

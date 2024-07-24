@@ -32,7 +32,6 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import {
-  getNilai,
   getNilaiSiswa,
   updateNilai,
 } from "@/lib/actions/nilai.actions";
@@ -47,12 +46,11 @@ import {
 } from "@/components/ui/select";
 import { Label } from "./ui/label";
 import {
-  readMatapelajaran,
   readMatapelajaranSiswa,
 } from "@/lib/actions/matapelajaran.actions";
 import { Skeleton } from "./ui/skeleton";
 import { Themegrafik } from "@/constants/Theme";
-import { getLoggedInUser, getLoggedUserid } from "@/lib/actions/user.action";
+import { getLoggedInUser } from "@/lib/actions/user.action";
 
 const chartConfig = {
   visitors: {
