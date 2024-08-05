@@ -45,6 +45,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import { authFormSchema } from "@/lib/utils";
 import { Skeleton } from "./ui/skeleton";
 import { CalendarIcon } from "lucide-react";
+import { Kelas } from "@/constants/Kelas";
 
 export function RegisterForm() {
   const router = useRouter();
@@ -58,6 +59,7 @@ export function RegisterForm() {
       email: "",
       password: "",
       firstName: "",
+      kelas: "",
       lastName: "",
       tanggal_lahir: "",
       jk: undefined,
@@ -75,6 +77,7 @@ export function RegisterForm() {
         lastName: data.lastName,
         name: `${data.firstName} ${data.lastName}`,
         role: "siswa",
+        kelas: data.kelas,
         tanggal_lahir: data.tanggal_lahir,
         jk: data.jk || "", // Provide a default value for jk
       };
@@ -179,6 +182,29 @@ export function RegisterForm() {
                                 <SelectItem value="Perempuan">
                                   Perempuan
                                 </SelectItem>
+                              </SelectGroup>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="kelas"
+                      render={({ field }) => (
+                        <div className="grid gap-2">
+                          <Label htmlFor="kelas">Kelas</Label>
+                          <Select onValueChange={field.onChange}>
+                            <SelectTrigger className="">
+                              <SelectValue placeholder="kelas" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectGroup>
+                               {Kelas.map((kelas,index) => (
+                                  <SelectItem value={kelas.value} key={index}>
+                                    {kelas.label}
+                                  </SelectItem>
+                                ))}
                               </SelectGroup>
                             </SelectContent>
                           </Select>

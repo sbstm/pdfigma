@@ -70,7 +70,6 @@ export const signIn = async ({ email, password }: signInProps) => {
     const session = await account.createEmailPasswordSession(email, password);
 
     const user = await getUserInfo({ userId: session.userId });
-    if (user.role === "siswa") {
       cookies().set("appwrite-session", session.secret, {
         path: "/",
         httpOnly: true,
@@ -78,9 +77,6 @@ export const signIn = async ({ email, password }: signInProps) => {
         secure: true,
       });
       return parseStringify(user);
-    } else {
-      throw new Error("User not found");
-    }
   } catch (error) {
     console.error("Error signing in:", error);
     throw new Error("Could not sign in");

@@ -29,7 +29,6 @@ import { toast } from "./ui/use-toast";
 
 export function LoginForm() {
   const router = useRouter();
-  const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const formSchema = authFormSchema();
 

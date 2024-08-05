@@ -15,6 +15,7 @@ export const authFormSchema = () =>
     tanggal_lahir: z.string().optional() , 
     jk: z.enum(['Laki-laki', 'Perempuan']).optional(),
     email: z.string().email(),
+    kelas: z.string().optional(),
     password: z.string().min(8),
   })
 

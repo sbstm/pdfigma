@@ -19,6 +19,10 @@ export default async function RootLayout({
 }>) {
   return (
     <html className="Green-dark">
+      <head>
+        <title>PDFigma</title>
+      <link rel="icon" href="/favicon.ico" sizes="any" />
+      </head>
       <body>
         <ThemeProvider>
           {children}

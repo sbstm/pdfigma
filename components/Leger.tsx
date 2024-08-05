@@ -98,7 +98,7 @@ const Leger = () => {
   useEffect(() => {
     init();
     fetchData();
-  }, [dataMataPelajaran]);
+  }, [matapelajaran]);
 
   const dataGrafik =
     nilaiData.length > 0
